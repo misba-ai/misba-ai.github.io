@@ -82,7 +82,7 @@ document.querySelectorAll("#navMenu a").forEach(link => {
     }
 
 
-    // About, Education, Skills, Projects, Certificate, Resume
+    // Other sections
     if (target.startsWith("#")) {
       event.preventDefault();
 
@@ -172,29 +172,47 @@ document.addEventListener("keydown", event => {
   }
 
 });
+
+
 // ================= DARK MODE =================
 
 const themeBtn = document.getElementById("themeBtn");
 
-themeBtn.addEventListener("click", () => {
-  document.body.classList.toggle("dark-mode");
+if (themeBtn) {
 
-  if (document.body.classList.contains("dark-mode")) {
+  themeBtn.addEventListener("click", () => {
+
+    document.body.classList.toggle("dark-mode");
+
+    if (document.body.classList.contains("dark-mode")) {
+
+      themeBtn.textContent = "☀ Light";
+
+      localStorage.setItem("theme", "dark");
+
+    } else {
+
+      themeBtn.textContent = "☾ Dark";
+
+      localStorage.setItem("theme", "light");
+
+    }
+
+  });
+
+
+  // Remember selected theme
+
+  if (localStorage.getItem("theme") === "dark") {
+
+    document.body.classList.add("dark-mode");
+
     themeBtn.textContent = "☀ Light";
-    localStorage.setItem("theme", "dark");
-  } else {
-    themeBtn.textContent = "☾ Dark";
-    localStorage.setItem("theme", "light");
+
   }
-});
 
-
-// Remember theme after refresh
-
-if (localStorage.getItem("theme") === "dark") {
-  document.body.classList.add("dark-mode");
-  themeBtn.textContent = "☀ Light";
 }
+
 
 // ================= YEAR =================
 
