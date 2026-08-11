@@ -1,58 +1,252 @@
+// ===============================
+// PORTFOLIO NAVIGATION
+// ===============================
+
 const menuBtn = document.getElementById("menuBtn");
 const navMenu = document.getElementById("navMenu");
 
-menuBtn.addEventListener("click", () => {
-  navMenu.classList.toggle("open");
-});
+// Mobile menu
+if (menuBtn && navMenu) {
+  menuBtn.addEventListener("click", () => {
+    navMenu.classList.toggle("open");
+  });
+}
 
-document.querySelectorAll("#navMenu a").forEach(link => {
-  link.addEventListener("click", () => navMenu.classList.remove("open"));
-});
 
-const optionButtons = document.querySelectorAll(".option-button");
+// ===============================
+// SECTION HANDLING
+// ===============================
+
 const detailSections = document.querySelectorAll(".detail-section");
+const optionButtons = document.querySelectorAll(".option-button");
 
-function showSection(id) {
-  detailSections.forEach(section => section.classList.remove("open"));
+function hideAllSections() {
+  detailSections.forEach(section => {
+    section.classList.remove("open");
+  });
+}
+
+function showSection(id, updateUrl = true) {
   const section = document.getElementById(id);
-  if (!section) return;
+
+  if (!section) {
+    console.log("Section not found:", id);
+    return;
+  }
+
+  hideAllSections();
 
   section.classList.add("open");
-  setTimeout(() => section.scrollIntoView({ behavior: "smooth", block: "start" }), 20);
+
+  if (updateUrl) {
+    history.replaceState(null, "", "#" + id);
+  }
+
+  setTimeout(() => {
+    section.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }, 50);
+
+  // Close mobile menu
+  if (navMenu) {
+    navMenu.classList.remove("open");
+  }
 }
+
+
+// ===============================
+// DARK OPTION BUTTONS
+// ===============================
 
 optionButtons.forEach(button => {
-  button.addEventListener("click", () => showSection(button.dataset.target));
+
+  button.addEventListener("click", () => {
+
+    const target = button.dataset.target;
+
+    if (target) {
+      showSection(target);
+    }
+
+  });
+
 });
+
+
+// ===============================
+// TOP MENU LINKS
+// ===============================
+
+document.querySelectorAll("#navMenu a").forEach(link => {
+
+  link.addEventListener("click", event => {
+
+    const href = link.getAttribute("href");
+
+    if (!href || !href.startsWith("#")) {
+      return;
+    }
+
+    const targetId = href.substring(1);
+
+    // Home
+    if (targetId === "home") {
+
+      hideAllSections();
+
+      history.replaceState(null, "", "#home");
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+      if (navMenu) {
+        navMenu.classList.remove("open");
+      }
+
+      return;
+    }
+
+    // Other sections
+    const targetSection = document.getElementById(targetId);
+
+    if (targetSection) {
+
+      event.preventDefault();
+
+      showSection(targetId);
+
+    }
+
+  });
+
+});
+
+
+// ===============================
+// BACK / CLOSE BUTTONS
+// ===============================
 
 document.querySelectorAll("[data-close]").forEach(button => {
+
   button.addEventListener("click", () => {
-    detailSections.forEach(section => section.classList.remove("open"));
-    document.getElementById("menu").scrollIntoView({ behavior: "smooth", block: "start" });
+
+    hideAllSections();
+
+    history.replaceState(null, "", "#home");
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
   });
+
 });
 
-const profilePhotoButton = document.getElementById("profilePhotoButton");
-const photoModal = document.getElementById("photoModal");
-const photoModalClose = document.getElementById("photoModalClose");
 
-profilePhotoButton.addEventListener("click", () => {
-  photoModal.classList.add("open");
-  photoModal.setAttribute("aria-hidden", "false");
+// ===============================
+// OPEN SECTION FROM URL
+// Example: website.com/#skills
+// ===============================
+
+window.addEventListener("DOMContentLoaded", () => {
+
+  const currentHash = window.location.hash.replace("#", "");
+
+  if (currentHash && currentHash !== "home") {
+
+    const section = document.getElementById(currentHash);
+
+    if (section) {
+      showSection(currentHash, false);
+    }
+
+  }
+
 });
 
-function closePhotoModal() {
-  photoModal.classList.remove("open");
-  photoModal.setAttribute("aria-hidden", "true");
+
+// ===============================
+// PROFILE PHOTO MODAL
+// ===============================
+
+const profilePhotoButton =
+  document.getElementById("profilePhotoButton");
+
+const photoModal =
+  document.getElementById("photoModal");
+
+const photoModalClose =
+  document.getElementById("photoModalClose");
+
+
+if (profilePhotoButton && photoModal) {
+
+  profilePhotoButton.addEventListener("click", () => {
+
+    photoModal.classList.add("open");
+
+    photoModal.setAttribute("aria-hidden", "false");
+
+  });
+
 }
 
-photoModalClose.addEventListener("click", closePhotoModal);
-photoModal.addEventListener("click", (event) => {
-  if (event.target === photoModal) closePhotoModal();
+
+function closePhotoModal() {
+
+  if (!photoModal) return;
+
+  photoModal.classList.remove("open");
+
+  photoModal.setAttribute("aria-hidden", "true");
+
+}
+
+
+if (photoModalClose) {
+
+  photoModalClose.addEventListener(
+    "click",
+    closePhotoModal
+  );
+
+}
+
+
+if (photoModal) {
+
+  photoModal.addEventListener("click", event => {
+
+    if (event.target === photoModal) {
+      closePhotoModal();
+    }
+
+  });
+
+}
+
+
+// ESC key closes photo
+document.addEventListener("keydown", event => {
+
+  if (event.key === "Escape") {
+    closePhotoModal();
+  }
+
 });
 
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") closePhotoModal();
-});
 
-document.getElementById("year").textContent = new Date().getFullYear();
+// ===============================
+// CURRENT YEAR
+// ===============================
+
+const yearElement = document.getElementById("year");
+
+if (yearElement) {
+  yearElement.textContent = new Date().getFullYear();
+}
