@@ -332,24 +332,59 @@ h1 {
   margin-top: 18px;
 }
 
+/* ================= ABOUT INFO CARD ================= */
+
 .quick-info {
-  border-top: 1px solid var(--line);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 22px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+  align-self: start;
 }
 
 .quick-info div {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 13px 0;
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  align-items: center;
+  gap: 18px;
+  min-height: 68px;
+  padding: 14px 0;
   border-bottom: 1px solid var(--line);
-  font-size: 0.88rem;
+  font-size: .9rem;
+}
+
+.quick-info div:last-child {
+  border-bottom: none;
+}
+
+.quick-info b {
+  font-weight: 600;
+  color: var(--ink);
 }
 
 .quick-info span {
   color: var(--muted);
   text-align: right;
+  line-height: 1.4;
+}
+body.dark-mode .quick-info {
+  background: #161b22;
+  border-color: #30363d;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
 }
 
+body.dark-mode .quick-info div {
+  border-color: #30363d;
+}
+
+body.dark-mode .quick-info b {
+  color: #f1f5f9;
+}
+
+body.dark-mode .quick-info span {
+  color: #8b949e;
+}
 
 /* ================= EDUCATION ================= */
 
