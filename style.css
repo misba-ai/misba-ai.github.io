@@ -360,3 +360,81 @@ footer p + p { margin-top: 4px; }
   .option-grid { grid-template-columns: 1fr; }
   .education-item { grid-template-columns: 1fr; gap: 8px; }
 }
+/* ================= DARK MODE BUTTON ================= */
+
+.theme-btn {
+  background: #222831;
+  color: white;
+  border: 1px solid #444;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  transition: 0.3s;
+}
+
+.theme-btn:hover {
+  background: #11151a;
+}
+
+
+/* ================= DARK MODE ================= */
+
+body.dark-mode {
+  background: #0d1117;
+  color: #f1f5f9;
+}
+
+body.dark-mode .site-header {
+  background: #0d1117;
+  border-color: #30363d;
+}
+
+body.dark-mode .brand,
+body.dark-mode nav a {
+  color: #f1f5f9;
+}
+
+body.dark-mode .hero,
+body.dark-mode .portfolio-menu,
+body.dark-mode .detail-section,
+body.dark-mode footer {
+  background: #0d1117;
+  color: #f1f5f9;
+}
+
+body.dark-mode .detail-section.light {
+  background: #161b22;
+}
+
+body.dark-mode .option-button,
+body.dark-mode .simple-box,
+body.dark-mode .quick-info,
+body.dark-mode .education-item {
+  background: #161b22;
+  color: #f1f5f9;
+  border-color: #30363d;
+}
+
+body.dark-mode p,
+body.dark-mode .muted,
+body.dark-mode .skill-intro,
+body.dark-mode .contact-text {
+  color: #c9d1d9;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3 {
+  color: #ffffff;
+}
+
+body.dark-mode .theme-btn {
+  background: #f1f5f9;
+  color: #111827;
+}
+
+body.dark-mode .theme-btn:hover {
+  background: #ffffff;
+}
