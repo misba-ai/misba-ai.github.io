@@ -1,46 +1,29 @@
-// ===============================
-// PORTFOLIO NAVIGATION
-// ===============================
-
 const menuBtn = document.getElementById("menuBtn");
 const navMenu = document.getElementById("navMenu");
 
-// Mobile menu
-if (menuBtn && navMenu) {
-  menuBtn.addEventListener("click", () => {
-    navMenu.classList.toggle("open");
-  });
-}
-
-
-// ===============================
-// SECTION HANDLING
-// ===============================
-
-const detailSections = document.querySelectorAll(".detail-section");
 const optionButtons = document.querySelectorAll(".option-button");
+const detailSections = document.querySelectorAll(".detail-section");
 
-function hideAllSections() {
+
+// ================= MENU BUTTON =================
+
+menuBtn.addEventListener("click", () => {
+  navMenu.classList.toggle("open");
+});
+
+
+// ================= SHOW SECTION =================
+
+function showSection(id) {
   detailSections.forEach(section => {
     section.classList.remove("open");
   });
-}
 
-function showSection(id, updateUrl = true) {
   const section = document.getElementById(id);
 
-  if (!section) {
-    console.log("Section not found:", id);
-    return;
-  }
-
-  hideAllSections();
+  if (!section) return;
 
   section.classList.add("open");
-
-  if (updateUrl) {
-    history.replaceState(null, "", "#" + id);
-  }
 
   setTimeout(() => {
     section.scrollIntoView({
@@ -48,77 +31,66 @@ function showSection(id, updateUrl = true) {
       block: "start"
     });
   }, 50);
-
-  // Close mobile menu
-  if (navMenu) {
-    navMenu.classList.remove("open");
-  }
 }
 
 
-// ===============================
-// DARK OPTION BUTTONS
-// ===============================
+// ================= PORTFOLIO OPTIONS =================
 
 optionButtons.forEach(button => {
-
   button.addEventListener("click", () => {
-
     const target = button.dataset.target;
-
-    if (target) {
-      showSection(target);
-    }
-
+    showSection(target);
   });
-
 });
 
 
-// ===============================
-// TOP MENU LINKS
-// ===============================
+// ================= TOP NAVIGATION =================
 
 document.querySelectorAll("#navMenu a").forEach(link => {
 
   link.addEventListener("click", event => {
 
-    const href = link.getAttribute("href");
-
-    if (!href || !href.startsWith("#")) {
-      return;
-    }
-
-    const targetId = href.substring(1);
+    const target = link.getAttribute("href");
 
     // Home
-    if (targetId === "home") {
+    if (target === "#home") {
+      event.preventDefault();
 
-      hideAllSections();
+      detailSections.forEach(section => {
+        section.classList.remove("open");
+      });
 
-      history.replaceState(null, "", "#home");
-
-      window.scrollTo({
-        top: 0,
+      document.getElementById("home").scrollIntoView({
         behavior: "smooth"
       });
 
-      if (navMenu) {
-        navMenu.classList.remove("open");
-      }
-
+      navMenu.classList.remove("open");
       return;
     }
 
-    // Other sections
-    const targetSection = document.getElementById(targetId);
 
-    if (targetSection) {
-
+    // Portfolio menu
+    if (target === "#menu") {
       event.preventDefault();
 
-      showSection(targetId);
+      document.getElementById("menu").scrollIntoView({
+        behavior: "smooth"
+      });
 
+      navMenu.classList.remove("open");
+      return;
+    }
+
+
+    // About, Education, Skills, Projects, Certificate, Resume
+    if (target.startsWith("#")) {
+      event.preventDefault();
+
+      const id = target.substring(1);
+
+      showSection(id);
+
+      navMenu.classList.remove("open");
     }
 
   });
@@ -126,21 +98,19 @@ document.querySelectorAll("#navMenu a").forEach(link => {
 });
 
 
-// ===============================
-// BACK / CLOSE BUTTONS
-// ===============================
+// ================= BACK BUTTON =================
 
 document.querySelectorAll("[data-close]").forEach(button => {
 
   button.addEventListener("click", () => {
 
-    hideAllSections();
+    detailSections.forEach(section => {
+      section.classList.remove("open");
+    });
 
-    history.replaceState(null, "", "#home");
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
+    document.getElementById("menu").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
     });
 
   });
@@ -148,31 +118,7 @@ document.querySelectorAll("[data-close]").forEach(button => {
 });
 
 
-// ===============================
-// OPEN SECTION FROM URL
-// Example: website.com/#skills
-// ===============================
-
-window.addEventListener("DOMContentLoaded", () => {
-
-  const currentHash = window.location.hash.replace("#", "");
-
-  if (currentHash && currentHash !== "home") {
-
-    const section = document.getElementById(currentHash);
-
-    if (section) {
-      showSection(currentHash, false);
-    }
-
-  }
-
-});
-
-
-// ===============================
-// PROFILE PHOTO MODAL
-// ===============================
+// ================= PROFILE PHOTO =================
 
 const profilePhotoButton =
   document.getElementById("profilePhotoButton");
@@ -184,22 +130,16 @@ const photoModalClose =
   document.getElementById("photoModalClose");
 
 
-if (profilePhotoButton && photoModal) {
+profilePhotoButton.addEventListener("click", () => {
 
-  profilePhotoButton.addEventListener("click", () => {
+  photoModal.classList.add("open");
 
-    photoModal.classList.add("open");
+  photoModal.setAttribute("aria-hidden", "false");
 
-    photoModal.setAttribute("aria-hidden", "false");
-
-  });
-
-}
+});
 
 
 function closePhotoModal() {
-
-  if (!photoModal) return;
 
   photoModal.classList.remove("open");
 
@@ -208,30 +148,23 @@ function closePhotoModal() {
 }
 
 
-if (photoModalClose) {
-
-  photoModalClose.addEventListener(
-    "click",
-    closePhotoModal
-  );
-
-}
+photoModalClose.addEventListener(
+  "click",
+  closePhotoModal
+);
 
 
-if (photoModal) {
+photoModal.addEventListener("click", event => {
 
-  photoModal.addEventListener("click", event => {
+  if (event.target === photoModal) {
+    closePhotoModal();
+  }
 
-    if (event.target === photoModal) {
-      closePhotoModal();
-    }
-
-  });
-
-}
+});
 
 
-// ESC key closes photo
+// ================= ESC KEY =================
+
 document.addEventListener("keydown", event => {
 
   if (event.key === "Escape") {
@@ -241,12 +174,7 @@ document.addEventListener("keydown", event => {
 });
 
 
-// ===============================
-// CURRENT YEAR
-// ===============================
+// ================= YEAR =================
 
-const yearElement = document.getElementById("year");
-
-if (yearElement) {
-  yearElement.textContent = new Date().getFullYear();
-}
+document.getElementById("year").textContent =
+  new Date().getFullYear();
