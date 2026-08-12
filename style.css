@@ -948,3 +948,129 @@ body.dark-mode .social-button:hover {
     grid-template-columns: 1fr;
   }
 }
+/* ================= HEADER LAYOUT ================= */
+
+.nav-wrap {
+  max-width: 1100px;
+  margin: auto;
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Brand */
+.brand {
+  flex-shrink: 0;
+}
+
+/* Small profile photo in header */
+.header-profile-button {
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 2px solid var(--white);
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--white);
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.header-profile-button:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 18px rgba(0,0,0,.25);
+}
+
+.header-profile-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* Navigation */
+.nav-wrap nav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Right side controls */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 10px;
+}
+
+/* Keep theme button on right */
+.header-actions .theme-btn {
+  margin-left: 0;
+  white-space: nowrap;
+}
+
+/* ================= DARK MODE HEADER PHOTO ================= */
+
+body.dark-mode .header-profile-button {
+  border-color: #30363d;
+  background: #161b22;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 800px) {
+
+  .nav-wrap {
+    padding: 14px 20px;
+    gap: 12px;
+  }
+
+  .brand {
+    margin-right: auto;
+  }
+
+  .header-profile-button {
+    width: 42px;
+    height: 42px;
+  }
+
+  .header-actions {
+    margin-left: 0;
+  }
+
+  .header-actions .theme-btn {
+    padding: 8px 11px;
+  }
+
+  .menu-btn {
+    display: block;
+  }
+
+  .nav-wrap nav {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 70px;
+    margin: 0;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    padding: 18px 28px;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .nav-wrap nav.open {
+    display: flex;
+  }
+
+  body.dark-mode .nav-wrap nav {
+    background: #0d1117;
+    border-color: #30363d;
+  }
+}
