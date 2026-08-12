@@ -212,7 +212,30 @@ if (themeBtn) {
   }
 
 }
+// ================= HEADER PROFILE =================
 
+const headerProfileButton =
+  document.getElementById("headerProfileButton");
+
+if (headerProfileButton) {
+  headerProfileButton.addEventListener("click", () => {
+
+    // Close mobile navigation
+    navMenu.classList.remove("open");
+
+    // Close any opened detail section
+    detailSections.forEach(section => {
+      section.classList.remove("open");
+    });
+
+    // Open Portfolio / Explore section
+    document.getElementById("menu").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+  });
+}
 
 // ================= YEAR =================
 
