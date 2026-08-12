@@ -1,20 +1,49 @@
+
+aa gaye hain. Agar ye actually `script.js` mein hain, to JavaScript error ho jayega aur `setActiveNav()` chalega hi nahi.
+
+### Sabse easy solution
+
+**`script.js` ka pura code delete karo** aur ye exact code paste karo:
+
+```javascript
 const menuBtn = document.getElementById("menuBtn");
 const navMenu = document.getElementById("navMenu");
 
 const optionButtons = document.querySelectorAll(".option-button");
 const detailSections = document.querySelectorAll(".detail-section");
+const navLinks = document.querySelectorAll("#navMenu a");
 
+// ================= ACTIVE NAVIGATION =================
+
+function setActiveNav(id) {
+  navLinks.forEach(link => {
+    link.classList.remove("active");
+  });
+
+  const activeLink = document.querySelector(
+    '#navMenu a[href="#' + id + '"]'
+  );
+
+  if (activeLink) {
+    activeLink.classList.add("active");
+  }
+}
+
+// Home initially active
+setActiveNav("home");
 
 // ================= MENU BUTTON =================
 
-menuBtn.addEventListener("click", () => {
-  navMenu.classList.toggle("open");
-});
-
+if (menuBtn) {
+  menuBtn.addEventListener("click", () => {
+    navMenu.classList.toggle("open");
+  });
+}
 
 // ================= SHOW SECTION =================
 
 function showSection(id) {
+
   detailSections.forEach(section => {
     section.classList.remove("open");
   });
@@ -24,6 +53,8 @@ function showSection(id) {
   if (!section) return;
 
   section.classList.add("open");
+
+  // Active underline
   setActiveNav(id);
 
   setTimeout(() => {
@@ -34,71 +65,63 @@ function showSection(id) {
   }, 50);
 }
 
-
 // ================= PORTFOLIO OPTIONS =================
 
 optionButtons.forEach(button => {
-  button.addEventListener("click", () => {
-    const target = button.dataset.target;
-    showSection(target);
-  });
-});
 
+  button.addEventListener("click", () => {
+
+    const target = button.dataset.target;
+
+    showSection(target);
+
+  });
+
+});
 
 // ================= TOP NAVIGATION =================
 
-document.querySelectorAll("#navMenu a").forEach(link => {
+navLinks.forEach(link => {
 
   link.addEventListener("click", event => {
 
     const target = link.getAttribute("href");
 
-    // Home
-    if (target === "#home") {
-      event.preventDefault();
+    if (!target || !target.startsWith("#")) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const id = target.substring(1);
+
+    // HOME
+    if (id === "home") {
 
       detailSections.forEach(section => {
         section.classList.remove("open");
       });
 
       document.getElementById("home").scrollIntoView({
-        behavior: "smooth"
+        behavior: "smooth",
+        block: "start"
       });
+
       setActiveNav("home");
 
       navMenu.classList.remove("open");
+
       return;
     }
 
+    // OTHER SECTIONS
+    showSection(id);
 
-    // Portfolio menu
-    if (target === "#menu") {
-      event.preventDefault();
-
-      document.getElementById("menu").scrollIntoView({
-        behavior: "smooth"
-      });
-
-      navMenu.classList.remove("open");
-      return;
-    }
-
-
-    // Other sections
-    if (target.startsWith("#")) {
-      event.preventDefault();
-
-      const id = target.substring(1);
-
-      showSection(id);
-
-      navMenu.classList.remove("open");
-    }
+    navMenu.classList.remove("open");
 
   });
 
 });
-
 
 // ================= BACK BUTTON =================
 
@@ -110,15 +133,20 @@ document.querySelectorAll("[data-close]").forEach(button => {
       section.classList.remove("open");
     });
 
+    // Portfolio menu par wapas
     document.getElementById("menu").scrollIntoView({
       behavior: "smooth",
       block: "start"
     });
 
+    // Kisi nav ko active nahi rakhenge
+    navLinks.forEach(link => {
+      link.classList.remove("active");
+    });
+
   });
 
 });
-
 
 // ================= PROFILE PHOTO =================
 
@@ -131,17 +159,21 @@ const photoModal =
 const photoModalClose =
   document.getElementById("photoModalClose");
 
+if (profilePhotoButton && photoModal) {
 
-profilePhotoButton.addEventListener("click", () => {
+  profilePhotoButton.addEventListener("click", () => {
 
-  photoModal.classList.add("open");
+    photoModal.classList.add("open");
 
-  photoModal.setAttribute("aria-hidden", "false");
+    photoModal.setAttribute("aria-hidden", "false");
 
-});
+  });
 
+}
 
 function closePhotoModal() {
+
+  if (!photoModal) return;
 
   photoModal.classList.remove("open");
 
@@ -149,21 +181,26 @@ function closePhotoModal() {
 
 }
 
+if (photoModalClose) {
 
-photoModalClose.addEventListener(
-  "click",
-  closePhotoModal
-);
+  photoModalClose.addEventListener(
+    "click",
+    closePhotoModal
+  );
 
+}
 
-photoModal.addEventListener("click", event => {
+if (photoModal) {
 
-  if (event.target === photoModal) {
-    closePhotoModal();
-  }
+  photoModal.addEventListener("click", event => {
 
-});
+    if (event.target === photoModal) {
+      closePhotoModal();
+    }
 
+  });
+
+}
 
 // ================= ESC KEY =================
 
@@ -175,10 +212,10 @@ document.addEventListener("keydown", event => {
 
 });
 
-
 // ================= DARK MODE =================
 
-const themeBtn = document.getElementById("themeBtn");
+const themeBtn =
+  document.getElementById("themeBtn");
 
 if (themeBtn) {
 
@@ -202,7 +239,6 @@ if (themeBtn) {
 
   });
 
-
   // Remember selected theme
 
   if (localStorage.getItem("theme") === "dark") {
@@ -214,63 +250,42 @@ if (themeBtn) {
   }
 
 }
+
 // ================= HEADER PROFILE =================
 
 const headerProfileButton =
   document.getElementById("headerProfileButton");
 
 if (headerProfileButton) {
+
   headerProfileButton.addEventListener("click", () => {
 
-    // Close mobile navigation
     navMenu.classList.remove("open");
 
-    // Close any opened detail section
     detailSections.forEach(section => {
       section.classList.remove("open");
     });
 
-    // Open Portfolio / Explore section
     document.getElementById("menu").scrollIntoView({
       behavior: "smooth",
       block: "start"
     });
 
+    // Menu page par koi nav active nahi
+    navLinks.forEach(link => {
+      link.classList.remove("active");
+    });
+
   });
+
 }
 
 // ================= YEAR =================
 
-document.getElementById("year").textContent =
-  new Date().getFullYear();
-// ================= ACTIVE NAVIGATION =================
+const yearElement =
+  document.getElementById("year");
 
-const navLinks = document.querySelectorAll("#navMenu a");
-
-function setActiveNav(id) {
-  navLinks.forEach(link => {
-    link.classList.remove("active");
-  });
-
-  const activeLink = document.querySelector(
-    `#navMenu a[href="#${id}"]`
-  );
-
-  if (activeLink) {
-    activeLink.classList.add("active");
-  }
+if (yearElement) {
+  yearElement.textContent =
+    new Date().getFullYear();
 }
-
-// Home initially active
-setActiveNav("home");
-
-// Navigation click
-navLinks.forEach(link => {
-  link.addEventListener("click", () => {
-    const target = link.getAttribute("href");
-
-    if (target && target.startsWith("#")) {
-      setActiveNav(target.substring(1));
-    }
-  });
-});
