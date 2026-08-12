@@ -1171,3 +1171,41 @@ body.dark-mode #navMenu a.active::after {
 .profile-photo-button {
   cursor: pointer;
 }
+.photo-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  background: rgba(0,0,0,.85);
+}
+
+.photo-modal.open {
+  display: flex;
+}
+
+.photo-modal img {
+  max-width: 90vw;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.photo-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  z-index: 10000;
+  width: 45px;
+  height: 45px;
+  border: 0;
+  border-radius: 50%;
+  background: white;
+  color: black;
+  font-size: 30px;
+  cursor: pointer;
+}
