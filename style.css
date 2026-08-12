@@ -1074,3 +1074,39 @@ body.dark-mode .header-profile-button {
     border-color: #30363d;
   }
 }
+/* ================= ACTIVE NAVIGATION ================= */
+
+#navMenu a {
+  position: relative;
+  padding-bottom: 6px;
+  transition: color 0.2s ease;
+}
+
+#navMenu a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.25s ease;
+}
+
+#navMenu a.active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+#navMenu a.active::after {
+  width: 100%;
+}
+
+/* Dark mode */
+body.dark-mode #navMenu a.active {
+  color: #5b9bd5;
+}
+
+body.dark-mode #navMenu a.active::after {
+  background: #5b9bd5;
+}
