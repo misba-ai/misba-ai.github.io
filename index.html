@@ -14,9 +14,19 @@
 
 <header class="site-header">
   <div class="nav-wrap">
+
     <a class="brand" href="#home">Misbahul Hoque</a>
-    <button class="menu-btn" id="menuBtn">Menu</button>
-    <button class="theme-btn" id="themeBtn">☾ Dark</button>
+
+    <!-- Small Profile Photo -->
+    <button
+      class="header-profile-button"
+      id="headerProfileButton"
+      aria-label="Open portfolio menu"
+      title="Open Portfolio"
+    >
+      <img src="assets/profile.jpg" alt="Misbahul Hoque">
+    </button>
+
     <nav id="navMenu">
       <a href="#home">Home</a>
       <a href="#about">About</a>
@@ -27,6 +37,12 @@
       <a href="#resume">Resume</a>
       <a href="#contact">Contact</a>
     </nav>
+
+    <div class="header-actions">
+      <button class="theme-btn" id="themeBtn">☾ Dark</button>
+      <button class="menu-btn" id="menuBtn">Menu</button>
+    </div>
+
   </div>
 </header>
 
