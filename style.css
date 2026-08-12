@@ -671,7 +671,7 @@ body.dark-mode .theme-btn:hover {
   .nav-wrap {
     flex-wrap: wrap;
   }
-
+  
   nav {
     display: none;
     position: absolute;
