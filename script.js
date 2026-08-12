@@ -24,6 +24,7 @@ function showSection(id) {
   if (!section) return;
 
   section.classList.add("open");
+  setActiveNav(id);
 
   setTimeout(() => {
     section.scrollIntoView({
@@ -63,6 +64,7 @@ document.querySelectorAll("#navMenu a").forEach(link => {
       document.getElementById("home").scrollIntoView({
         behavior: "smooth"
       });
+      setActiveNav("home");
 
       navMenu.classList.remove("open");
       return;
@@ -241,3 +243,34 @@ if (headerProfileButton) {
 
 document.getElementById("year").textContent =
   new Date().getFullYear();
+// ================= ACTIVE NAVIGATION =================
+
+const navLinks = document.querySelectorAll("#navMenu a");
+
+function setActiveNav(id) {
+  navLinks.forEach(link => {
+    link.classList.remove("active");
+  });
+
+  const activeLink = document.querySelector(
+    `#navMenu a[href="#${id}"]`
+  );
+
+  if (activeLink) {
+    activeLink.classList.add("active");
+  }
+}
+
+// Home initially active
+setActiveNav("home");
+
+// Navigation click
+navLinks.forEach(link => {
+  link.addEventListener("click", () => {
+    const target = link.getAttribute("href");
+
+    if (target && target.startsWith("#")) {
+      setActiveNav(target.substring(1));
+    }
+  });
+});
