@@ -148,69 +148,43 @@ document.querySelectorAll("[data-close]").forEach(button => {
 
 });
 
-// ================= PROFILE PHOTO =================
+// ================= PROFILE PHOTO MODAL =================
 
-const profilePhotoButton =
-  document.getElementById("profilePhotoButton");
+const profilePhotoButton = document.getElementById("profilePhotoButton");
+const photoModal = document.getElementById("photoModal");
+const photoModalClose = document.getElementById("photoModalClose");
 
-const photoModal =
-  document.getElementById("photoModal");
+if (profilePhotoButton && photoModal && photoModalClose) {
 
-const photoModalClose =
-  document.getElementById("photoModalClose");
-
-if (profilePhotoButton && photoModal) {
-
-  profilePhotoButton.addEventListener("click", () => {
-
+  // Open photo
+  profilePhotoButton.addEventListener("click", function () {
     photoModal.classList.add("open");
-
     photoModal.setAttribute("aria-hidden", "false");
-
   });
 
-}
+  // Close button
+  photoModalClose.addEventListener("click", function () {
+    photoModal.classList.remove("open");
+    photoModal.setAttribute("aria-hidden", "true");
+  });
 
-function closePhotoModal() {
-
-  if (!photoModal) return;
-
-  photoModal.classList.remove("open");
-
-  photoModal.setAttribute("aria-hidden", "true");
-
-}
-
-if (photoModalClose) {
-
-  photoModalClose.addEventListener(
-    "click",
-    closePhotoModal
-  );
-
-}
-
-if (photoModal) {
-
-  photoModal.addEventListener("click", event => {
-
+  // Close when clicking outside photo
+  photoModal.addEventListener("click", function (event) {
     if (event.target === photoModal) {
-      closePhotoModal();
+      photoModal.classList.remove("open");
+      photoModal.setAttribute("aria-hidden", "true");
     }
-
   });
 
+  // Close with ESC
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      photoModal.classList.remove("open");
+      photoModal.setAttribute("aria-hidden", "true");
+    }
+  });
 }
 
-// ================= ESC KEY =================
-
-document.addEventListener("keydown", event => {
-
-  if (event.key === "Escape") {
-    closePhotoModal();
-  }
-
-});
 
 // ================= DARK MODE =================
 
