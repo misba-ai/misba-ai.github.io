@@ -1,11 +1,3 @@
-
-aa gaye hain. Agar ye actually `script.js` mein hain, to JavaScript error ho jayega aur `setActiveNav()` chalega hi nahi.
-
-### Sabse easy solution
-
-**`script.js` ka pura code delete karo** aur ye exact code paste karo:
-
-```javascript
 const menuBtn = document.getElementById("menuBtn");
 const navMenu = document.getElementById("navMenu");
 
@@ -13,10 +5,12 @@ const optionButtons = document.querySelectorAll(".option-button");
 const detailSections = document.querySelectorAll(".detail-section");
 const navLinks = document.querySelectorAll("#navMenu a");
 
+
 // ================= ACTIVE NAVIGATION =================
 
 function setActiveNav(id) {
-  navLinks.forEach(link => {
+
+  navLinks.forEach(function(link) {
     link.classList.remove("active");
   });
 
@@ -29,49 +23,54 @@ function setActiveNav(id) {
   }
 }
 
-// Home initially active
-setActiveNav("home");
 
 // ================= MENU BUTTON =================
 
-if (menuBtn) {
-  menuBtn.addEventListener("click", () => {
+if (menuBtn && navMenu) {
+
+  menuBtn.addEventListener("click", function() {
     navMenu.classList.toggle("open");
   });
+
 }
+
 
 // ================= SHOW SECTION =================
 
 function showSection(id) {
 
-  detailSections.forEach(section => {
+  detailSections.forEach(function(section) {
     section.classList.remove("open");
   });
 
   const section = document.getElementById(id);
 
-  if (!section) return;
+  if (!section) {
+    return;
+  }
 
   section.classList.add("open");
 
-  // Active underline
   setActiveNav(id);
 
-  setTimeout(() => {
+  setTimeout(function() {
+
     section.scrollIntoView({
       behavior: "smooth",
       block: "start"
     });
+
   }, 50);
 }
 
+
 // ================= PORTFOLIO OPTIONS =================
 
-optionButtons.forEach(button => {
+optionButtons.forEach(function(button) {
 
-  button.addEventListener("click", () => {
+  button.addEventListener("click", function() {
 
-    const target = button.dataset.target;
+    const target = button.getAttribute("data-target");
 
     showSection(target);
 
@@ -79,68 +78,88 @@ optionButtons.forEach(button => {
 
 });
 
+
 // ================= TOP NAVIGATION =================
 
-navLinks.forEach(link => {
+navLinks.forEach(function(link) {
 
-  link.addEventListener("click", event => {
-
-    const target = link.getAttribute("href");
-
-    if (!target || !target.startsWith("#")) {
-      return;
-    }
+  link.addEventListener("click", function(event) {
 
     event.preventDefault();
 
+    const target = link.getAttribute("href");
+
+    if (!target) {
+      return;
+    }
+
     const id = target.substring(1);
 
+
     // HOME
+
     if (id === "home") {
 
-      detailSections.forEach(section => {
+      detailSections.forEach(function(section) {
         section.classList.remove("open");
       });
 
-      document.getElementById("home").scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
+      const home = document.getElementById("home");
+
+      if (home) {
+
+        home.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
+      }
 
       setActiveNav("home");
 
-      navMenu.classList.remove("open");
+      if (navMenu) {
+        navMenu.classList.remove("open");
+      }
 
       return;
     }
 
+
     // OTHER SECTIONS
+
     showSection(id);
 
-    navMenu.classList.remove("open");
+    if (navMenu) {
+      navMenu.classList.remove("open");
+    }
 
   });
 
 });
 
+
 // ================= BACK BUTTON =================
 
-document.querySelectorAll("[data-close]").forEach(button => {
+document.querySelectorAll("[data-close]").forEach(function(button) {
 
-  button.addEventListener("click", () => {
+  button.addEventListener("click", function() {
 
-    detailSections.forEach(section => {
+    detailSections.forEach(function(section) {
       section.classList.remove("open");
     });
 
-    // Portfolio menu par wapas
-    document.getElementById("menu").scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
+    const menu = document.getElementById("menu");
 
-    // Kisi nav ko active nahi rakhenge
-    navLinks.forEach(link => {
+    if (menu) {
+
+      menu.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    }
+
+    navLinks.forEach(function(link) {
       link.classList.remove("active");
     });
 
@@ -148,42 +167,90 @@ document.querySelectorAll("[data-close]").forEach(button => {
 
 });
 
+
 // ================= PROFILE PHOTO MODAL =================
 
-const profilePhotoButton = document.getElementById("profilePhotoButton");
-const photoModal = document.getElementById("photoModal");
-const photoModalClose = document.getElementById("photoModalClose");
+const profilePhotoButton =
+  document.getElementById("profilePhotoButton");
 
-if (profilePhotoButton && photoModal && photoModalClose) {
+const photoModal =
+  document.getElementById("photoModal");
 
-  // Open photo
-  profilePhotoButton.addEventListener("click", function () {
+const photoModalClose =
+  document.getElementById("photoModalClose");
+
+
+if (profilePhotoButton && photoModal) {
+
+  profilePhotoButton.addEventListener("click", function() {
+
     photoModal.classList.add("open");
-    photoModal.setAttribute("aria-hidden", "false");
+
+    photoModal.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
   });
 
-  // Close button
-  photoModalClose.addEventListener("click", function () {
-    photoModal.classList.remove("open");
-    photoModal.setAttribute("aria-hidden", "true");
-  });
-
-  // Close when clicking outside photo
-  photoModal.addEventListener("click", function (event) {
-    if (event.target === photoModal) {
-      photoModal.classList.remove("open");
-      photoModal.setAttribute("aria-hidden", "true");
-    }
-  });
-
-  // Close with ESC
-  document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") {
-      photoModal.classList.remove("open");
-      photoModal.setAttribute("aria-hidden", "true");
-    }
-  });
 }
+
+
+if (photoModalClose && photoModal) {
+
+  photoModalClose.addEventListener("click", function() {
+
+    photoModal.classList.remove("open");
+
+    photoModal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+  });
+
+}
+
+
+if (photoModal) {
+
+  photoModal.addEventListener("click", function(event) {
+
+    if (event.target === photoModal) {
+
+      photoModal.classList.remove("open");
+
+      photoModal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+    }
+
+  });
+
+}
+
+
+// ================= ESC KEY =================
+
+document.addEventListener("keydown", function(event) {
+
+  if (
+    event.key === "Escape" &&
+    photoModal
+  ) {
+
+    photoModal.classList.remove("open");
+
+    photoModal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+  }
+
+});
 
 
 // ================= DARK MODE =================
@@ -191,31 +258,43 @@ if (profilePhotoButton && photoModal && photoModalClose) {
 const themeBtn =
   document.getElementById("themeBtn");
 
+
 if (themeBtn) {
 
-  themeBtn.addEventListener("click", () => {
+  themeBtn.addEventListener("click", function() {
 
     document.body.classList.toggle("dark-mode");
 
-    if (document.body.classList.contains("dark-mode")) {
+    if (
+      document.body.classList.contains("dark-mode")
+    ) {
 
       themeBtn.textContent = "☀ Light";
 
-      localStorage.setItem("theme", "dark");
+      localStorage.setItem(
+        "theme",
+        "dark"
+      );
 
     } else {
 
       themeBtn.textContent = "☾ Dark";
 
-      localStorage.setItem("theme", "light");
+      localStorage.setItem(
+        "theme",
+        "light"
+      );
 
     }
 
   });
 
-  // Remember selected theme
 
-  if (localStorage.getItem("theme") === "dark") {
+  // Remember theme
+
+  if (
+    localStorage.getItem("theme") === "dark"
+  ) {
 
     document.body.classList.add("dark-mode");
 
@@ -225,28 +304,38 @@ if (themeBtn) {
 
 }
 
+
 // ================= HEADER PROFILE =================
 
 const headerProfileButton =
   document.getElementById("headerProfileButton");
 
+
 if (headerProfileButton) {
 
-  headerProfileButton.addEventListener("click", () => {
+  headerProfileButton.addEventListener("click", function() {
 
-    navMenu.classList.remove("open");
+    if (navMenu) {
+      navMenu.classList.remove("open");
+    }
 
-    detailSections.forEach(section => {
+    detailSections.forEach(function(section) {
       section.classList.remove("open");
     });
 
-    document.getElementById("menu").scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
+    const menu =
+      document.getElementById("menu");
 
-    // Menu page par koi nav active nahi
-    navLinks.forEach(link => {
+    if (menu) {
+
+      menu.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    }
+
+    navLinks.forEach(function(link) {
       link.classList.remove("active");
     });
 
@@ -254,12 +343,20 @@ if (headerProfileButton) {
 
 }
 
-// ================= YEAR =================
+
+// ================= CURRENT YEAR =================
 
 const yearElement =
   document.getElementById("year");
 
 if (yearElement) {
+
   yearElement.textContent =
     new Date().getFullYear();
+
 }
+
+
+// ================= DEFAULT HOME =================
+
+setActiveNav("home");
